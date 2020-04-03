@@ -8,12 +8,12 @@
 #include <stdlib.h>
 
 UtPod::UtPod() {
-    songs = NULL;
+    songs = nullptr;
     memSize = MAX_MEMORY;
 }
 
 UtPod::UtPod(int size) {
-    songs = NULL;
+    songs = nullptr;
     if(size > MAX_MEMORY || size <= 0)
         memSize = MAX_MEMORY;
     else
@@ -35,15 +35,15 @@ int UtPod::addSong(Song const &s) {
 int UtPod::removeSong(Song const &s) {
     SongNode *head = songs;
     //If removing first song
-    if(head->s == s){
+    if((head != nullptr) && (head->s == s)){;
         songs = head->next;
         delete head;
         return SUCCESS;
     }
     //If songs in the middle or at the end
-    else{
-        SongNode *prev = NULL;
-        while(head!= NULL){
+    else if(head != nullptr){
+        SongNode *prev = nullptr;
+        while(head!= nullptr){
             // Song found
             if(head->s == s){
                 prev->next = head->next;
@@ -56,7 +56,6 @@ int UtPod::removeSong(Song const &s) {
                 head = head->next;
             }
         }
-
     }
     // Song not found
     return NOT_FOUND;
@@ -70,14 +69,14 @@ void UtPod::shuffle() {
     SongNode *head = songs;
 
     // Counts number of songs
-    while (head != NULL){
+    while (head != nullptr){
         songCount++;
         head = head->next;
     }
 
     // Generates two random numbers within range [0:songCount)
     // Swaps songs at the indexes, songCount*2 times
-    for(int i = 0; i < songCount*2; i++){
+    for(int i = 0; i < songCount*5; i++){
         int randIndexOne = rand()%songCount;
         int randIndexTwo = rand()%songCount;
         swap(randIndexOne, randIndexTwo);
@@ -86,7 +85,7 @@ void UtPod::shuffle() {
 
 void UtPod::showSongList() {
     SongNode *head = songs;
-    while (head != NULL){
+    while (head != nullptr){
         //Traverses through linked list from head to Null and prints title, artist, size in MB
         cout << head->s.getTitle() << ", " << head->s.getArtist() << ", " << head->s.getSize() << " MB" << endl;
         head = head->next;
@@ -98,10 +97,10 @@ void UtPod::sortSongList() {
     //Traverses through linked list to find the next smallest element starting from the next index, then swapping
     //Sort is completed when head index reaches NULL
     SongNode *head = songs;
-    while(head != NULL){
+    while(head != nullptr){
         SongNode *innerLoop = head;
         SongNode *smallest = head;
-        while(innerLoop != NULL){
+        while(innerLoop != nullptr){
             if(smallest->s > innerLoop->s){
                 smallest = innerLoop;
             }
@@ -117,13 +116,13 @@ void UtPod::sortSongList() {
 void UtPod::clearMemory() {
     //Frees all SongNode pointers in linked list
     SongNode *head = songs;
-    SongNode *temp = NULL;
-    while (head != NULL){
+    SongNode *temp = nullptr;
+    while (head != nullptr){
         temp = head;
         head = head->next;
         delete temp;
     }
-    songs = NULL;
+    songs = nullptr;
 }
 
 int UtPod::getRemainingMemory() {
@@ -132,7 +131,7 @@ int UtPod::getRemainingMemory() {
     int totalMem = 0;
     int remainingMem = 0;
     SongNode *head = songs;
-    while (head != NULL){
+    while (head != nullptr){
         totalMem += head->s.getSize();
         head = head->next;
     }
@@ -144,7 +143,7 @@ UtPod::~UtPod() {   //frees all memory if called
     clearMemory();
 }
 
-void UtPod::swap(int indexOne, int indexTwo) {  //swaps nodes at given indeces of linked list
+void UtPod::swap(int indexOne, int indexTwo) {  //swaps nodes at given indexes of linked list
     SongNode *temp = songs;
     SongNode *temp2 = songs;
     for(int i = 0; i < indexOne; i++){

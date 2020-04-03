@@ -25,7 +25,7 @@ Song::Song(string artist, string title, int size) {
 }
 
 void Song::setTitle(string title) {
-    this->artist = artist;
+    this->title = title;
 }
 
 void Song::setArtist(string artist) {
